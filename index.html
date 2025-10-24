@@ -264,26 +264,10 @@
         import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
-        // 🛑 SECCIÓN DE CONFIGURACIÓN DE FIREBASE (INTEGRADA MANUALMENTE) 🛑
-        
-        // Pega aquí el objeto que copiaste de la consola de Firebase.
-        const REAL_FIREBASE_CONFIG = {
-            apiKey: "AIzaSyDNGZTWgOlBDXG_VRPt88ezvWQznzvN5_o",
-            authDomain: "libreria-bazar-miguelito.firebaseapp.com",
-            projectId: "libreria-bazar-miguelito",
-            storageBucket: "libreria-bazar-miguelito.firebasestorage.app",
-            messagingSenderId: "493141456239",
-            appId: "1:493141456239:web:1e0c0176935fe9fcb6249a",
-            measurementId: "G-8LECLW25RG"
-        };
-
-        // Mantenemos la lógica de la app usando la configuración real.
-        // OJO: appId se extrae de projectId ("libreria-bazar-miguelito") para que la app sepa dónde guardar.
-        const appId = REAL_FIREBASE_CONFIG.projectId;
-        const firebaseConfig = REAL_FIREBASE_CONFIG;
-        const initialAuthToken = null; 
-
-        // 🛑 FIN DE LA SECCIÓN DE CONFIGURACIÓN 🛑
+        // Variables globales proporcionadas por el entorno de Canvas
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Exponer Firebase para el script principal
         window.appId = appId;
@@ -301,6 +285,8 @@
                 window.userId = crypto.randomUUID(); 
                 
                 // --- FIX: Si no hay Firebase, forzar que la data se considere cargada (para ejecución local) ---
+                // Carga los datos guardados en LocalStorage si existen, antes de marcar como cargados
+                loadCatalogLocally(); 
                 window.appData.isDataLoaded = true;
                 loadingMessage.classList.add('hidden');
                 // -------------------------------------------------------------------------------------------------
@@ -510,35 +496,94 @@
         let currentEditingCategory = null; // Categoría actualmente seleccionada en modo Admin
         const ADMIN_PASSWORD = '0000';
         const PASSWORD_MODAL_ID = 'passwordModal'; 
-        const loadingMessage = document.getElementById('loadingMessage');
         let currentSearchTerm = ''; // NUEVA VARIABLE GLOBAL PARA EL BUSCADOR
+        
+        // --- INICIO DE CORRECCIÓN (Problema 1) ---
+        // 3. REFERENCIAS A ELEMENTOS DEL DOM (MOVIDO AL INICIO DEL SCRIPT)
+        const mainMenu = document.getElementById('mainMenu');
+        const categoriesView = document.getElementById('categoriesView');
+        const productsView = document.getElementById('productsView');
+        const recommendationsView = document.getElementById('recommendationsView'); 
+        const adminView = document.getElementById('adminView');
+        
+        const categoriesContainer = document.getElementById('categoriesContainer');
+        const productsTitle = document.getElementById('productsTitle');
+        const productsListContainer = document.getElementById('productsListContainer');
+        const appSubtitle = document.getElementById('appSubtitle');
+        const zivaContentContainer = document.getElementById('zivaContentContainer'); 
+        const categoryTitle = document.getElementById('categoryTitle'); // Referencia al nuevo ID para el título
+
+        // Modal references
+        const modal = document.getElementById('customModal');
+        const modalContent = document.getElementById('modalContent');
+        
+        const loadingMessage = document.getElementById('loadingMessage'); // DEFINIDO AQUÍ PARA EVITAR EL CRASH EN EL MODULO SCRIPT
+        // --- FIN DE CORRECCIÓN (Problema 1) ---
+        
+        // --- INICIO DE CORRECCIÓN (Problema 2 & 3 - Persistencia Local / Sincronización) ---
+        const LOCAL_CATALOG_KEY = 'miguelito_catalog_data';
+
+        /** Guarda la estructura completa del catálogo en LocalStorage. (FALLBACK) */
+        function saveCatalogLocally() {
+            try {
+                localStorage.setItem(LOCAL_CATALOG_KEY, JSON.stringify(window.appData.categories));
+                console.log("Catálogo guardado localmente.");
+            } catch (e) {
+                console.error("Error al guardar localmente: ", e);
+            }
+        }
+
+        /** Carga la estructura completa del catálogo desde LocalStorage. (FALLBACK) */
+        function loadCatalogLocally() {
+            try {
+                const localData = localStorage.getItem(LOCAL_CATALOG_KEY);
+                if (localData) {
+                    window.appData.categories = JSON.parse(localData);
+                    console.log("Catálogo cargado desde LocalStorage.");
+                    return true;
+                }
+            } catch (e) {
+                console.error("Error al cargar localmente: ", e);
+            }
+            return false;
+        }
 
 
         /** Guarda la estructura completa del catálogo en Firestore. */
         async function saveCatalog() {
-            if (!window.db || !window.userId) {
-                console.error("Firebase no está inicializado o el usuario no está autenticado.");
+            if (!window.db) {
+                console.error("Firebase no está inicializado. Guardando localmente. (No se sincronizará con otros usuarios).");
+                // FALLBACK LOCAL STORAGE
+                saveCatalogLocally(); 
                 return;
             }
             
-            // La ruta sigue las reglas de seguridad para datos privados de usuario: /artifacts/{appId}/users/{userId}/admin_data/catalog
-            const catalogRef = window.doc(window.db, `artifacts/${window.appId}/users/${window.userId}/admin_data`, 'catalog');
+            // La ruta ahora apunta a un documento compartido: /artifacts/{appId}/shared_data/catalog
+            const catalogRef = window.doc(window.db, `artifacts/${window.appId}/shared_data`, 'catalog');
             
             try {
                 // Usamos un objeto simple para guardar la lista de categorías
                 await window.setDoc(catalogRef, { categories: window.appData.categories });
-                console.log("Catálogo guardado exitosamente en Firestore.");
+                console.log("Catálogo guardado exitosamente en Firestore y sincronizado con otros usuarios.");
             } catch (e) {
-                console.error("Error al guardar el catálogo: ", e);
-                // No mostramos un modal aquí para evitar interrupción, solo logueamos el error
+                console.error("Error al guardar el catálogo en Firestore: ", e);
+                saveCatalogLocally(); // Guarda localmente si falla Firebase
             }
         }
 
         // Start the listener for the catalog data
         window.startFirebaseListeners = function() {
-            if (!window.db || !window.userId || window.appData.isDataLoaded) return;
+            if (!window.db || window.appData.isDataLoaded) {
+                 // Si Firebase no está activo (por ejemplo, en un sandbox), marcamos como cargado
+                 if (!window.db) {
+                    window.appData.isDataLoaded = true;
+                    loadingMessage.classList.add('hidden');
+                 }
+                 return;
+            }
             
-            const catalogRef = window.doc(window.db, `artifacts/${window.appId}/users/${window.userId}/admin_data`, 'catalog');
+            // La ruta de escucha ahora es el documento compartido
+            const catalogRef = window.doc(window.db, `artifacts/${window.appId}/shared_data`, 'catalog');
 
             // onSnapshot escucha los cambios en tiempo real y carga los datos guardados.
             window.onSnapshot(catalogRef, (docSnapshot) => {
@@ -548,12 +593,11 @@
                 if (docSnapshot.exists()) {
                     const data = docSnapshot.data();
                     window.appData.categories = data.categories || []; 
-                    console.log("Datos de Catálogo actualizados desde Firestore.", window.appData.categories.length, "categorías.");
+                    console.log("Datos de Catálogo actualizados desde Firestore (Sincronización OK).", window.appData.categories.length, "categorías.");
                 } else {
-                    // Si el documento no existe (primera vez), inicializa data local vacía y la guarda
-                    window.appData.categories = [];
+                    // Si el documento no existe (primera vez), usa la data actual (hardcodeada o local) y la guarda
                     saveCatalog(); 
-                    console.log("Documento de Catálogo no encontrado. Inicializando data local vacía.");
+                    console.log("Documento de Catálogo no encontrado. Usando data actual e intentando guardarla en Firestore.");
                 }
                 window.appData.isDataLoaded = true;
                 
@@ -583,10 +627,17 @@
                 }
             }, (error) => {
                 console.error("Error al escuchar el catálogo:", error);
-                loadingMessage.textContent = 'Error al cargar los datos.';
+                loadingMessage.textContent = 'Error al cargar los datos. Cargando datos locales si están disponibles.';
                 loadingMessage.classList.remove('hidden');
+                // Intenta cargar localmente si hay un error de conexión/permisos
+                loadCatalogLocally();
+                window.appData.isDataLoaded = true;
+                if (!categoriesView.classList.contains('hidden')) {
+                    renderCategoryButtons();
+                }
             });
         };
+        // --- FIN DE CORRECCIÓN (Problema 2 & 3 - Persistencia Local / Sincronización) ---
 
 
         // 2. CONTENIDO DE RECOMENDACIONES DE ZIVA (Extraído del archivo original)
@@ -637,23 +688,7 @@
         `;
 
 
-        // 3. REFERENCIAS A ELEMENTOS DEL DOM
-        const mainMenu = document.getElementById('mainMenu');
-        const categoriesView = document.getElementById('categoriesView');
-        const productsView = document.getElementById('productsView');
-        const recommendationsView = document.getElementById('recommendationsView'); 
-        const adminView = document.getElementById('adminView');
-        
-        const categoriesContainer = document.getElementById('categoriesContainer');
-        const productsTitle = document.getElementById('productsTitle');
-        const productsListContainer = document.getElementById('productsListContainer');
-        const appSubtitle = document.getElementById('appSubtitle');
-        const zivaContentContainer = document.getElementById('zivaContentContainer'); 
-        const categoryTitle = document.getElementById('categoryTitle'); // Referencia al nuevo ID para el título
-
-        // Modal references
-        const modal = document.getElementById('customModal');
-        const modalContent = document.getElementById('modalContent');
+        // 3. REFERENCIAS A ELEMENTOS DEL DOM (COMENTADO YA QUE SE MOVIÓ AL INICIO)
 
 
         // 4. FUNCIONES DE VISTA (Control de Pantallas)
@@ -680,6 +715,7 @@
             categoriesView.classList.remove('hidden');
             appSubtitle.textContent = 'Módulo de Precios';
             // Vuelve a renderizar en caso de que la data se haya actualizado o para restaurar la vista
+            // Se invoca renderCategoryButtons() aunque no esté cargada para mostrar el mensaje de "Cargando" si es necesario.
             if(window.appData.isDataLoaded) {
                  // Limpiar la búsqueda al volver a la vista
                 document.getElementById('searchInput').value = '';
@@ -687,6 +723,7 @@
                 categoryTitle.textContent = 'Seleccione una Categoría';
                 renderCategoryButtons(); 
             }
+            // Si no está cargada, la vista muestra el loadingMessage y el listener de Firebase se encargará de renderizar cuando la data llegue.
         }
 
         // Muestra la lista de productos para una categoría específica
@@ -980,7 +1017,7 @@
             if (name) {
                 const id = crypto.randomUUID(); 
                 window.appData.categories.push({ id: id, name: name, products: [] });
-                saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
                 renderAdminCategories();
                 hideModal();
             } else {
@@ -1020,7 +1057,7 @@
                 const category = window.appData.categories.find(c => c.id === id);
                 if (category) {
                     category.name = newName;
-                    saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                    saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
                     // Si la vista de productos estaba abierta, actualizarla
                     if(currentEditingCategory && currentEditingCategory.id === id) {
                         currentEditingCategory.name = newName;
@@ -1055,7 +1092,7 @@
         // Elimina la categoría
         function deleteCategory(id) {
             window.appData.categories = window.appData.categories.filter(c => c.id !== id);
-            saveCatalog(); // <<-- GUARDA EN FIRESTORE
+            saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
             renderAdminCategories();
             hideModal();
         }
@@ -1140,7 +1177,7 @@
                     window.appData.categories[index] = currentEditingCategory;
                 }
                 
-                saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
                 renderAdminProducts();
                 hideModal();
             } else {
@@ -1179,7 +1216,7 @@
                         currentEditingCategory.products[index] = category.products[index];
                     }
 
-                    saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                    saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
                     renderAdminProducts();
                     hideModal();
                 }
@@ -1216,7 +1253,7 @@
                     currentEditingCategory.products = category.products;
                 }
                 
-                saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
                 renderAdminProducts();
                 hideModal();
             }
