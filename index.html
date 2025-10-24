@@ -9,68 +9,54 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* Configuración de fuentes y tema educativo/profesional */
+        /* (Estilos CSS - sin cambios) */
         :root {
-            --color-primary: #1e40af; /* Azul oscuro educativo */
-            --color-accent: #f59e0b;  /* Amarillo/Ámbar de energía y conocimiento */
+            --color-primary: #1e40af;
+            --color-accent: #f59e0b; 
         }
-
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Gris muy claro */
-            color: #1f2937; /* Gris oscuro para el texto principal */
+            background-color: #f8fafc;
+            color: #1f2937;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 2rem;
         }
-
-        /* Estilo para el título principal usando Poppins */
         .title-font {
             font-family: 'Poppins', sans-serif;
             color: var(--color-primary);
         }
-
-        /* --- ESTILOS DEL LOGO SIMPLIFICADO --- */
         .logo-image {
-            /* Mantiene el tamaño grande del logo */
             width: 180px; 
             height: auto;
             object-fit: contain;
-            margin-bottom: 20px; /* Margen debajo del logo */
-            display: block; /* Asegura que la imagen sea tratada como bloque para margin-bottom */
-            margin-left: auto; /* Centra la imagen dentro de header.text-center */
-            margin-right: auto; /* Centra la imagen dentro de header.text-center */
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
-        /* --- FIN ESTILOS DEL LOGO SIMPLIFICADO --- */
-
-        /* Estilo para los botones de Módulos */
         .module-button {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background-color: var(--color-primary);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
-
         .module-button:hover {
             background-color: #1d4ed8;
             transform: translateY(-3px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
         }
-
-        /* Estilo para los botones de Categoría (más planos) */
         .category-button {
             transition: all 0.2s;
-            background-color: #eef2ff; /* Azul muy claro */
+            background-color: #eef2ff;
             color: var(--color-primary);
             border: 2px solid #c7d2fe;
         }
         .category-button:hover {
-            background-color: #c7d2fe; /* Azul un poco más fuerte al pasar el mouse */
+            background-color: #c7d2fe;
             transform: translateY(-1px);
         }
-        
-        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -84,7 +70,6 @@
             z-index: 100;
             backdrop-filter: blur(3px);
         }
-
         .modal-content {
             background: white;
             padding: 2rem;
@@ -94,13 +79,10 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
             animation: fadeIn 0.3s ease-out;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
-
-        /* Tabla de Precios */
         .price-table-header {
             background-color: var(--color-primary);
             color: white;
@@ -109,19 +91,16 @@
             border-radius: 0.5rem 0.5rem 0 0;
             text-transform: uppercase;
         }
-
         .price-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e5e7eb; /* Gris muy claro */
+            border-bottom: 1px solid #e5e7eb;
         }
-        
         .price-item:last-child {
             border-bottom: none;
         }
-
     </style>
 </head>
 <body class="selection:bg-yellow-300 selection:text-gray-900">
@@ -132,10 +111,8 @@
             class="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-1 px-3 rounded-full transition-colors shadow-lg z-20">
             JEFE
         </button>
-
         <header class="text-center mb-10">
             <img src="img/logo.jpg" alt="Logo de la Librería" class="logo-image">
-            
             <h1 class="title-font text-3xl sm:text-5xl font-extrabold tracking-tight mb-2">
                 Librería Bazar Miguelito
             </h1>
@@ -144,43 +121,35 @@
             </p>
         </header>
 
-
         <div id="mainMenu" class="transition-opacity duration-300">
             <main class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
                 <button class="module-button flex flex-col items-center justify-center p-6 text-white rounded-xl h-40"
                         onclick="showCategories()">
                     <i data-lucide="tags" class="w-8 h-8 mb-2"></i>
                     <span class="text-xl font-semibold">Precios</span>
                     <span class="text-sm font-light opacity-80">Tarifas y Catálogo</span>
                 </button>
-
                 <button class="module-button flex flex-col items-center justify-center p-6 text-white rounded-xl h-40"
                         onclick="showRecommendations()">
                     <i data-lucide="lightbulb" class="w-8 h-8 mb-2"></i>
                     <span class="text-xl font-semibold">Recomendaciones</span>
                     <span class="text-sm font-light opacity-80">Ideas y Sugerencias</span>
                 </button>
-
                 <button class="module-button flex flex-col items-center justify-center p-6 text-white rounded-xl h-40"
                         onclick="showMessage('Contacto Administrativo', '<p class=text-gray-600 mb-6 text-center>Para consultas urgentes, por favor contacte a su supervisor directo o al correo: admin@miguelito.com.</p><button onclick=hideModal(event) class=w-full py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg transition duration-150 shadow-md>Entendido</button>')">
                     <i data-lucide="users" class="w-8 h-8 mb-2"></i>
                     <span class="text-xl font-semibold">Contacto</span>
                     <span class="text-sm font-light opacity-80">Soporte y Consultas</span>
                 </button>
-                
             </main>
         </div>
-
 
         <div id="categoriesView" class="hidden transition-opacity duration-300">
             <button onclick="showMainMenu()" class="text-gray-500 hover:text-gray-700 font-semibold mb-6 flex items-center">
                 <i data-lucide="chevron-left" class="w-5 h-5 mr-1"></i>
                 <span>Volver al Menú Principal</span>
             </button>
-
             <h2 id="categoryTitle" class="text-3xl title-font font-bold mb-6 border-b pb-2">Seleccione una Categoría</h2>
-            
             <div class="mb-6">
                 <input type="text" id="searchInput" oninput="liveSearch()"
                     class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-lg shadow-inner" 
@@ -191,17 +160,14 @@
             </div>
         </div>
 
-
         <div id="productsView" class="hidden transition-opacity duration-300">
             <button onclick="showCategories()" class="text-gray-500 hover:text-gray-700 font-semibold mb-6 flex items-center">
                 <i data-lucide="chevron-left" class="w-5 h-5 mr-1"></i>
                 <span id="backToCategoriesText">Volver a Categorías</span>
             </button>
-            
             <h2 id="productsTitle" class="text-3xl title-font font-bold mb-6 border-b pb-2">Productos en [Categoría]</h2>
-            
             <div id="productsListContainer" class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
-                </div>
+            </div>
         </div>
         
         <div id="recommendationsView" class="hidden transition-opacity duration-300">
@@ -209,9 +175,8 @@
                 <i data-lucide="chevron-left" class="w-5 h-5 mr-1"></i>
                 <span>Volver al Menú Principal</span>
             </button>
-            
             <div id="zivaContentContainer" class="bg-white shadow-xl rounded-2xl p-6 sm:p-8 border border-gray-200 text-gray-800">
-                </div>
+            </div>
         </div>
 
         <div id="adminView" class="hidden transition-opacity duration-300">
@@ -219,9 +184,7 @@
                 <i data-lucide="log-out" class="w-5 h-5 mr-1"></i>
                 <span>Salir Modo Jefe</span>
             </button>
-
             <h2 class="text-3xl title-font font-bold mb-6 border-b pb-2 text-red-600">Gestión de Catálogo (Modo Jefe)</h2>
-
             <div class="bg-red-50 p-6 rounded-xl mb-8 border border-red-200">
                 <h3 class="text-xl font-bold text-red-700 mb-4 flex justify-between items-center">
                     Categorías
@@ -231,9 +194,8 @@
                     </button>
                 </h3>
                 <div id="adminCategoriesContainer" class="space-y-3">
-                    </div>
+                </div>
             </div>
-
             <div id="adminProductsSection" class="bg-gray-50 p-6 rounded-xl border border-gray-200 hidden">
                 <h3 id="adminProductsTitle" class="text-xl font-bold text-gray-700 mb-4 border-b pb-2">Productos en [Categoría]</h3>
                 <button onclick="showAddProductModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-1 px-3 rounded-full mb-4 transition-colors shadow-md flex items-center">
@@ -241,20 +203,17 @@
                     Añadir Producto
                 </button>
                 <div id="adminProductsList" class="space-y-2">
-                    </div>
+                </div>
             </div>
         </div>
-
 
         <footer class="mt-12 text-center text-gray-400 text-sm">
             &copy; 2025 Librería Bazar Miguelito | Sistema Interno V1.0
         </footer>
-
     </div>
-
     <div id="customModal" class="modal-overlay" onclick="hideModal(event)">
         <div id="modalContent" class="modal-content" onclick="event.stopPropagation()">
-            </div>
+        </div>
     </div>
 
     <script type="module">
@@ -264,10 +223,25 @@
         import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
-        // Variables globales proporcionadas por el entorno de Canvas
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // 🛑 SECCIÓN DE CONFIGURACIÓN DE FIREBASE (INTEGRADA) 🛑
+        // Estas son las credenciales que proporcionaste
+        const REAL_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyDNGZTWgOlBDXG_VRPt88ezvWQznzvN5_o",
+            authDomain: "libreria-bazar-miguelito.firebaseapp.com",
+            projectId: "libreria-bazar-miguelito",
+            storageBucket: "libreria-bazar-miguelito.firebasestorage.app",
+            messagingSenderId: "493141456239",
+            appId: "1:493141456239:web:1e0c0176935fe9fcb6249a",
+            measurementId: "G-8LECLW25RG"
+        };
+        
+        // Asignamos tus credenciales a las variables que usa la app
+        const appId = REAL_FIREBASE_CONFIG.projectId;
+        const firebaseConfig = REAL_FIREBASE_CONFIG;
+        const initialAuthToken = null; 
+        // 🛑 FIN DE LA SECCIÓN DE CONFIGURACIÓN 🛑
+
 
         // Exponer Firebase para el script principal
         window.appId = appId;
@@ -277,30 +251,31 @@
         window.doc = doc;
         window.onSnapshot = onSnapshot;
         window.setDoc = setDoc;
+        window.isFirebaseActive = false; // Flag para saber si Firebase está conectado
 
         // Función de autenticación e inicialización
         async function authenticateUser() {
-            if (Object.keys(firebaseConfig).length === 0) {
-                console.error("Firebase config not found. Running without persistence.");
+            // CORRECCIÓN: Verificamos si la config tiene un projectId, 
+            // ya que la config vacía {} (de un sandbox) no lo tendría.
+            if (!firebaseConfig.projectId) { 
+                console.error("Firebase config not found. Running in local-only mode.");
                 window.userId = crypto.randomUUID(); 
                 
-                // --- FIX: Si no hay Firebase, forzar que la data se considere cargada (para ejecución local) ---
-                // Carga los datos guardados en LocalStorage si existen, antes de marcar como cargados
-                loadCatalogLocally(); 
-                window.appData.isDataLoaded = true;
-                loadingMessage.classList.add('hidden');
-                // -------------------------------------------------------------------------------------------------
-                
+                // --- FIX PARA ERROR 1 (CRASH) ---
+                // No intentamos ocultar 'loadingMessage' aquí.
+                // Solo llamamos a la función de carga local (que se define en el próximo script).
+                // 'startFirebaseListeners' se llamará, verá que window.db es null, y cargará localmente.
                 window.startFirebaseListeners();
                 return;
             }
 
-            const app = initializeApp(firebaseConfig);
-            window.db = getFirestore(app);
-            window.auth = getAuth(app);
-            setLogLevel('Debug'); // Habilitar el log de debug de Firestore
-
             try {
+                const app = initializeApp(firebaseConfig);
+                window.db = getFirestore(app);
+                window.auth = getAuth(app);
+                window.isFirebaseActive = true; // Marcamos Firebase como activo
+                setLogLevel('Debug'); 
+
                 if (initialAuthToken) {
                     await signInWithCustomToken(window.auth, initialAuthToken);
                 } else {
@@ -312,7 +287,6 @@
                         window.userId = user.uid;
                         console.log("Firebase Authenticated. User ID:", window.userId);
                     } else {
-                        // Fallback si la autenticación falla por alguna razón
                         window.userId = crypto.randomUUID(); 
                         console.log("Firebase running anonymously. User ID:", window.userId);
                     }
@@ -322,21 +296,25 @@
             } catch (error) {
                 console.error("Firebase Auth Error:", error);
                 window.userId = crypto.randomUUID(); 
-                window.startFirebaseListeners();
+                window.startFirebaseListeners(); // Intentar cargar localmente si la autenticación falla
             }
         }
-
-        authenticateUser();
+        
+        // CORRECCIÓN PARA ERROR 1 (CRASH):
+        // Esperamos a que todo el HTML esté cargado (DOMContentLoaded) antes de intentar conectar.
+        // Esto asegura que el script 2 (con 'loadingMessage') esté listo.
+        document.addEventListener('DOMContentLoaded', () => {
+            authenticateUser();
+        });
     </script>
 
     <script>
         // Inicializar iconos de Lucide
         lucide.createIcons();
 
-        // 1. DATA (Ahora gestionada por Firebase)
-        // Datos iniciales de catálogo inyectados. Se guardarán en Firestore en el primer inicio si el documento no existe.
+        // 1. DATA (Datos iniciales hardcodeados)
         window.appData = {
-            categories: [ // { id: '...', name: '...', products: [{nombre: '...', precio: 0.0}] }
+            categories: [ 
                 { // ----------------- CATEGORÍA 1: MATERIAL ESCOLAR -----------------
                     id: 'mat_escolar', 
                     name: 'MATERIAL ESCOLAR',
@@ -493,13 +471,12 @@
             isDataLoaded: false
         };
         
-        let currentEditingCategory = null; // Categoría actualmente seleccionada en modo Admin
+        let currentEditingCategory = null; 
         const ADMIN_PASSWORD = '0000';
         const PASSWORD_MODAL_ID = 'passwordModal'; 
-        let currentSearchTerm = ''; // NUEVA VARIABLE GLOBAL PARA EL BUSCADOR
+        let currentSearchTerm = ''; 
         
-        // --- INICIO DE CORRECCIÓN (Problema 1) ---
-        // 3. REFERENCIAS A ELEMENTOS DEL DOM (MOVIDO AL INICIO DEL SCRIPT)
+        // 3. REFERENCIAS A ELEMENTOS DEL DOM
         const mainMenu = document.getElementById('mainMenu');
         const categoriesView = document.getElementById('categoriesView');
         const productsView = document.getElementById('productsView');
@@ -511,143 +488,134 @@
         const productsListContainer = document.getElementById('productsListContainer');
         const appSubtitle = document.getElementById('appSubtitle');
         const zivaContentContainer = document.getElementById('zivaContentContainer'); 
-        const categoryTitle = document.getElementById('categoryTitle'); // Referencia al nuevo ID para el título
-
-        // Modal references
+        const categoryTitle = document.getElementById('categoryTitle'); 
         const modal = document.getElementById('customModal');
         const modalContent = document.getElementById('modalContent');
+        const loadingMessage = document.getElementById('loadingMessage'); 
         
-        const loadingMessage = document.getElementById('loadingMessage'); // DEFINIDO AQUÍ PARA EVITAR EL CRASH EN EL MODULO SCRIPT
-        // --- FIN DE CORRECCIÓN (Problema 1) ---
-        
-        // --- INICIO DE CORRECCIÓN (Problema 2 & 3 - Persistencia Local / Sincronización) ---
-        const LOCAL_CATALOG_KEY = 'miguelito_catalog_data';
+        // --- FUNCIONES DE PERSISTENCIA (LOCAL STORAGE FALLBACK) ---
+        const LOCAL_CATALOG_KEY = 'miguelito_catalog_data_v2'; // v2 para evitar conflictos
 
-        /** Guarda la estructura completa del catálogo en LocalStorage. (FALLBACK) */
+        /** Guarda el catálogo en LocalStorage (si falla Firebase). */
         function saveCatalogLocally() {
             try {
                 localStorage.setItem(LOCAL_CATALOG_KEY, JSON.stringify(window.appData.categories));
-                console.log("Catálogo guardado localmente.");
+                console.log("Catálogo guardado localmente (fallback).");
             } catch (e) {
                 console.error("Error al guardar localmente: ", e);
             }
         }
 
-        /** Carga la estructura completa del catálogo desde LocalStorage. (FALLBACK) */
+        /** Carga el catálogo desde LocalStorage (si falla Firebase). */
         function loadCatalogLocally() {
             try {
                 const localData = localStorage.getItem(LOCAL_CATALOG_KEY);
                 if (localData) {
                     window.appData.categories = JSON.parse(localData);
                     console.log("Catálogo cargado desde LocalStorage.");
-                    return true;
+                } else {
+                    console.log("No hay datos locales, se usarán los datos iniciales.");
+                    // Los datos iniciales ya están en window.appData.categories
                 }
             } catch (e) {
                 console.error("Error al cargar localmente: ", e);
             }
-            return false;
+            // Marcamos como cargado y ocultamos el mensaje
+            window.appData.isDataLoaded = true;
+            loadingMessage.classList.add('hidden');
         }
+        // --- FIN FUNCIONES DE PERSISTENCIA ---
 
 
-        /** Guarda la estructura completa del catálogo en Firestore. */
+        /** Guarda la estructura completa del catálogo en Firestore (o local si falla). */
         async function saveCatalog() {
-            if (!window.db) {
-                console.error("Firebase no está inicializado. Guardando localmente. (No se sincronizará con otros usuarios).");
-                // FALLBACK LOCAL STORAGE
-                saveCatalogLocally(); 
+            // Si Firebase no se conectó (window.db es null), usa el guardado local.
+            if (!window.isFirebaseActive || !window.db) {
+                console.warn("Firebase no está activo. Guardando localmente (No se sincronizará).");
+                saveCatalogLocally();
                 return;
             }
             
-            // La ruta ahora apunta a un documento compartido: /artifacts/{appId}/shared_data/catalog
+            // CORRECCIÓN MULTI-USUARIO: Ruta compartida
             const catalogRef = window.doc(window.db, `artifacts/${window.appId}/shared_data`, 'catalog');
             
             try {
-                // Usamos un objeto simple para guardar la lista de categorías
                 await window.setDoc(catalogRef, { categories: window.appData.categories });
-                console.log("Catálogo guardado exitosamente en Firestore y sincronizado con otros usuarios.");
+                console.log("Catálogo guardado exitosamente en Firestore (Ruta Compartida).");
             } catch (e) {
                 console.error("Error al guardar el catálogo en Firestore: ", e);
-                saveCatalogLocally(); // Guarda localmente si falla Firebase
+                saveCatalogLocally(); // Intenta guardado local si falla la escritura en Firestore
             }
         }
 
-        // Start the listener for the catalog data
+        /** Inicia la escucha de datos (Firebase o Local). */
         window.startFirebaseListeners = function() {
-            if (!window.db || window.appData.isDataLoaded) {
-                 // Si Firebase no está activo (por ejemplo, en un sandbox), marcamos como cargado
-                 if (!window.db) {
-                    window.appData.isDataLoaded = true;
-                    loadingMessage.classList.add('hidden');
-                 }
-                 return;
+            // Si Firebase no se conectó (window.db es null), carga localmente.
+            if (!window.isFirebaseActive || !window.db) {
+                console.warn("Firebase no está activo. Cargando datos locales.");
+                loadCatalogLocally();
+                // Renderiza la vista actual si es necesario
+                if (!categoriesView.classList.contains('hidden')) {
+                    renderCategoryButtons();
+                }
+                return;
             }
             
-            // La ruta de escucha ahora es el documento compartido
+            // CORRECCIÓN MULTI-USUARIO: Ruta compartida
             const catalogRef = window.doc(window.db, `artifacts/${window.appId}/shared_data`, 'catalog');
 
-            // onSnapshot escucha los cambios en tiempo real y carga los datos guardados.
             window.onSnapshot(catalogRef, (docSnapshot) => {
                 loadingMessage.classList.add('hidden');
                 
-                // Si el documento existe, carga los datos
                 if (docSnapshot.exists()) {
                     const data = docSnapshot.data();
                     window.appData.categories = data.categories || []; 
-                    console.log("Datos de Catálogo actualizados desde Firestore (Sincronización OK).", window.appData.categories.length, "categorías.");
+                    console.log("Datos de Catálogo actualizados desde Firestore (Ruta Compartida).", window.appData.categories.length, "categorías.");
                 } else {
-                    // Si el documento no existe (primera vez), usa la data actual (hardcodeada o local) y la guarda
+                    // Si el documento no existe (primera vez), guarda los datos iniciales en la nube.
+                    console.log("Documento de Catálogo no encontrado en Firestore. Guardando datos iniciales...");
                     saveCatalog(); 
-                    console.log("Documento de Catálogo no encontrado. Usando data actual e intentando guardarla en Firestore.");
                 }
                 window.appData.isDataLoaded = true;
                 
-                // Forzar re-renderizado si estamos en una vista que depende de los datos
+                // Forzar re-renderizado
                 if (!categoriesView.classList.contains('hidden')) {
-                    // Si el usuario está buscando, mantén los resultados de la búsqueda
                     if (currentSearchTerm.length > 0) {
                          const results = performSearch(currentSearchTerm);
                          renderSearchResults(results, categoriesContainer);
                     } else {
                         renderCategoryButtons();
                     }
-                } else if (!document.getElementById('adminView').classList.contains('hidden')) {
+                } else if (!adminView.classList.contains('hidden')) {
                     renderAdminCategories();
                     if (currentEditingCategory) {
-                         // Refrescar la lista de productos si se está editando una categoría
                         const category = window.appData.categories.find(c => c.id === currentEditingCategory.id);
                         if (category) {
                             currentEditingCategory = category;
                             renderAdminProducts();
                         } else {
-                            // La categoría actual fue eliminada
                             document.getElementById('adminProductsSection').classList.add('hidden');
                             currentEditingCategory = null;
                         }
                     }
                 }
             }, (error) => {
-                console.error("Error al escuchar el catálogo:", error);
-                loadingMessage.textContent = 'Error al cargar los datos. Cargando datos locales si están disponibles.';
-                loadingMessage.classList.remove('hidden');
-                // Intenta cargar localmente si hay un error de conexión/permisos
-                loadCatalogLocally();
-                window.appData.isDataLoaded = true;
+                console.error("Error al escuchar el catálogo de Firestore:", error);
+                loadingMessage.textContent = 'Error de conexión. Cargando datos locales.';
+                loadCatalogLocally(); // Carga local si hay error de Firestore
                 if (!categoriesView.classList.contains('hidden')) {
                     renderCategoryButtons();
                 }
             });
         };
-        // --- FIN DE CORRECCIÓN (Problema 2 & 3 - Persistencia Local / Sincronización) ---
 
 
-        // 2. CONTENIDO DE RECOMENDACIONES DE ZIVA (Extraído del archivo original)
+        // 2. CONTENIDO DE RECOMENDACIONES DE ZIVA
         const ZIVA_CONTENT = `
             <h2 class="text-3xl title-font font-bold mb-6 border-b pb-2 text-blue-800">Recomendaciones de Ziva</h2>
             <h3 class="text-2xl font-bold text-blue-700 mb-2 title-font">💬 ¡Hola, soy Ziva!</h3>
             <p class="mb-4 text-base">¡Tu asistente virtual en la tienda! Estoy aquí para ayudarte a <strong>atender sin perder la cabeza 😄</strong>. Sigue estas recomendaciones y todo saldrá genial:</p>
-
             <hr class="my-4 border-gray-200">
-
             <h4 class="text-xl font-semibold text-blue-600 mb-3">🛍️ ¿Cómo atender a un cliente?</h4>
             <ul class="list-disc pl-6 space-y-3 text-sm sm:text-base">
                 <li><strong>Saluda siempre con amabilidad.</strong>
@@ -659,9 +627,7 @@
                     <br>Ejemplo: “¡Gracias por tu compra! Que tengas un buen día.”</li>
                 <li><strong>Siempre da las gracias.</strong></li>
             </ul>
-
             <hr class="my-4 border-gray-200">
-
             <h4 class="text-xl font-semibold text-blue-600 mb-3">💸 ¿Qué hago si no hay vuelto?</h4>
             <ul class="list-disc pl-6 space-y-3 text-sm sm:text-base">
                 <li><strong>Informa con cortesía:</strong>
@@ -676,9 +642,7 @@
                 <li><strong>Nunca entregues de más.</strong>
                     <br>Si no se puede resolver, guarda el producto hasta que el cliente regrese con cambio.</li>
             </ul>
-
             <hr class="my-4 border-gray-200">
-
             <h4 class="text-xl font-semibold text-blue-600 mb-3">📦 Consejo extra de Ziva:</h4>
             <ul class="list-disc pl-6 space-y-3 text-sm sm:text-base">
                 <li>Mantén siempre tu área limpia y ordenada.</li>
@@ -687,13 +651,7 @@
             </ul>
         `;
 
-
-        // 3. REFERENCIAS A ELEMENTOS DEL DOM (COMENTADO YA QUE SE MOVIÓ AL INICIO)
-
-
         // 4. FUNCIONES DE VISTA (Control de Pantallas)
-
-        // Oculta todas las vistas excepto la deseada
         function hideAllViews() {
             mainMenu.classList.add('hidden');
             categoriesView.classList.add('hidden');
@@ -702,31 +660,27 @@
             adminView.classList.add('hidden'); 
         }
 
-        // Muestra el menú principal
         function showMainMenu() {
             hideAllViews();
             mainMenu.classList.remove('hidden');
             appSubtitle.textContent = 'Portal de Recursos para Asesores de Venta';
         }
 
-        // Muestra la vista de categorías de precios
         function showCategories() {
             hideAllViews();
             categoriesView.classList.remove('hidden');
             appSubtitle.textContent = 'Módulo de Precios';
-            // Vuelve a renderizar en caso de que la data se haya actualizado o para restaurar la vista
-            // Se invoca renderCategoryButtons() aunque no esté cargada para mostrar el mensaje de "Cargando" si es necesario.
             if(window.appData.isDataLoaded) {
-                 // Limpiar la búsqueda al volver a la vista
                 document.getElementById('searchInput').value = '';
                 currentSearchTerm = '';
                 categoryTitle.textContent = 'Seleccione una Categoría';
                 renderCategoryButtons(); 
+            } else {
+                // Si la data aún no carga (raro, pero posible), mostramos el mensaje
+                loadingMessage.classList.remove('hidden');
             }
-            // Si no está cargada, la vista muestra el loadingMessage y el listener de Firebase se encargará de renderizar cuando la data llegue.
         }
 
-        // Muestra la lista de productos para una categoría específica
         function showProducts(categoryName) {
             hideAllViews();
             productsView.classList.remove('hidden');
@@ -735,7 +689,6 @@
             renderProductList(categoryName);
         }
         
-        // Función para mostrar la vista de Recomendaciones de Ziva
         function showRecommendations() {
             hideAllViews();
             zivaContentContainer.innerHTML = ZIVA_CONTENT; 
@@ -744,15 +697,13 @@
             lucide.createIcons(); 
         }
 
-        /** Muestra la vista de administración. */
         function showAdminView() {
             hideAllViews();
-            document.getElementById('adminView').classList.remove('hidden');
+            adminView.classList.remove('hidden');
             renderAdminCategories();
             appSubtitle.textContent = 'MODO JEFE ACTIVADO (Edición de Catálogo)';
         }
 
-        /** Sale del modo administrador y vuelve al menú principal. */
         function exitAdminMode() {
             currentEditingCategory = null;
             document.getElementById('adminProductsSection').classList.add('hidden');
@@ -760,20 +711,13 @@
         }
 
         // 5. FUNCIONES DE RENDERIZADO (CLIENTE)
-
-        // Renderiza los botones de categoría
         function renderCategoryButtons() {
-            // Se asegura de que la búsqueda esté vacía para restaurar la vista
             if (currentSearchTerm.length > 0) return; 
-
             categoriesContainer.innerHTML = ''; 
-            // Restaura la clase a grid para la vista de categorías
             categoriesContainer.className = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4';
-
-            // Oculta el mensaje de carga una vez que tenemos data (aunque esté vacía)
             loadingMessage.classList.add('hidden');
 
-            if (window.appData.categories.length === 0) {
+            if (window.appData.categories.length === 0 && window.appData.isDataLoaded) {
                  categoriesContainer.innerHTML = `<p class="col-span-full text-center text-gray-500 py-6">El catálogo está vacío. El modo JEFE debe agregar categorías.</p>`;
                  return;
             }
@@ -792,9 +736,7 @@
             lucide.createIcons(); 
         }
 
-        // Renderiza la lista de productos para la categoría específica
         function renderProductList(categoryName) {
-            // Buscar la categoría por nombre
             const category = window.appData.categories.find(c => c.name === categoryName);
             const products = category ? category.products : [];
             productsListContainer.innerHTML = ''; 
@@ -804,7 +746,6 @@
                 return;
             }
             
-            // Crear encabezado de la tabla (simulado con div)
             productsListContainer.innerHTML = `
                 <div class="price-table-header">
                     <div class="flex justify-between items-center">
@@ -814,7 +755,6 @@
                 </div>
             `;
 
-            // Crear lista de productos
             const listHtml = products.map(item => {
                 return `
                     <div class="price-item text-sm sm:text-base hover:bg-gray-50">
@@ -827,25 +767,18 @@
             productsListContainer.innerHTML += listHtml;
         }
         
-        // 6. FUNCIONES DE BÚSQUEDA (NUEVAS)
-
-        /** Función para realizar la búsqueda "en vivo" mientras el usuario escribe. */
+        // 6. FUNCIONES DE BÚSQUEDA
         function liveSearch() {
             currentSearchTerm = document.getElementById('searchInput').value.trim();
-            
-            // Clear previous search timeout (opcional: para optimizar el rendimiento)
             if (window.searchTimeout) {
                 clearTimeout(window.searchTimeout);
             }
-
-            // Debounce: espera 300ms antes de buscar
             window.searchTimeout = setTimeout(() => {
                 if (currentSearchTerm.length > 0) {
                     const results = performSearch(currentSearchTerm);
                     renderSearchResults(results, categoriesContainer);
                     categoryTitle.textContent = `Resultados de Búsqueda`;
                 } else {
-                    // Restaurar vista de categoría
                     categoryTitle.textContent = 'Seleccione una Categoría';
                     renderCategoryButtons(); 
                 }
@@ -853,16 +786,12 @@
             }, 300);
         }
 
-        /** Realiza el filtro a través de todos los productos y categorías. */
         function performSearch(term) {
             const lowerCaseTerm = term.toLowerCase();
             const allProducts = [];
-            
             window.appData.categories.forEach(category => {
                 category.products.forEach(product => {
-                    // Buscar en el nombre del producto
                     if (product.nombre.toLowerCase().includes(lowerCaseTerm)) {
-                        // Agregar el nombre de la categoría para dar contexto en los resultados
                         allProducts.push({
                             nombre: product.nombre,
                             precio: product.precio,
@@ -871,22 +800,16 @@
                     }
                 });
             });
-            
             return allProducts;
         }
 
-        /** Renderiza la lista de resultados de la búsqueda en el contenedor de categorías. */
         function renderSearchResults(results, container) {
             container.innerHTML = ''; 
-            // Cambia la clase para un diseño de lista en lugar de cuadrícula
             container.className = 'flex flex-col gap-2'; 
-
             if (results.length === 0) {
                  container.innerHTML = `<p class="col-span-full text-center text-gray-500 py-6">No se encontraron productos que coincidan con la búsqueda "${currentSearchTerm}".</p>`;
                  return;
             }
-
-            // Crear la lista de resultados
             const listHtml = results.map(item => {
                 return `
                     <div class="flex justify-between items-center p-3 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 transition-colors">
@@ -898,13 +821,10 @@
                     </div>
                 `;
             }).join('');
-
             container.innerHTML = listHtml;
         }
         
-        // 7. UTILIDADES Y MODAL (Numeración actualizada)
-
-        // Asigna un ícono de Lucide basado en la categoría
+        // 7. UTILIDADES Y MODAL
         function getCategoryIcon(categoryName) {
             const normalizedName = categoryName.toUpperCase();
             if (normalizedName.includes('ESCOLAR') || normalizedName.includes('ÚTILES')) return 'pencil-ruler';
@@ -915,31 +835,21 @@
             return 'package';
         }
 
-        /**
-         * Muestra un mensaje simple o un formulario en el modal.
-         */
         function showMessage(title, message) {
             modalContent.innerHTML = `
                 <h3 class="text-2xl font-bold title-font mb-4 text-center">${title}</h3>
                 ${message}
             `;
-
             modal.style.display = 'flex';
         }
 
-        /**
-         * Oculta el modal.
-         */
         function hideModal(event) {
-            // Solo oculta si se hace clic en el overlay o en un botón dentro del modal
             if (!event || event.target === modal) {
                 modal.style.display = 'none';
             }
         }
 
-        // 8. MODO ADMINISTRADOR (JEFE) (Numeración actualizada)
-
-        /** Muestra el modal para ingresar la contraseña. */
+        // 8. MODO ADMINISTRADOR (JEFE)
         function showAdminPasswordModal() {
             showMessage('Acceso de Administrador', `
                 <p class="text-gray-600 mb-4 text-center">Ingrese la contraseña para acceder al modo de edición.</p>
@@ -950,7 +860,6 @@
                     Ingresar
                 </button>
             `);
-            // Permitir Enter para ingresar
             document.getElementById('adminPasswordInput').addEventListener('keyup', function(event) {
                 if (event.key === 'Enter') {
                     checkAdminPassword();
@@ -958,7 +867,6 @@
             });
         }
 
-        /** Verifica la contraseña e inicia el modo administrador. */
         function checkAdminPassword() {
             const input = document.getElementById('adminPasswordInput');
             const errorDiv = document.getElementById('passwordError');
@@ -972,13 +880,11 @@
             }
         }
         
-        // 9. FUNCIONES CRUD (ADMIN) (Numeración actualizada)
-
-        // Renderiza los botones de categoría en la vista de Admin
+        // 9. FUNCIONES CRUD (ADMIN)
+        // (Estas funciones ahora llaman a saveCatalog(), que guarda en Firebase o Local)
         function renderAdminCategories() {
             const container = document.getElementById('adminCategoriesContainer');
             container.innerHTML = '';
-            // Ocultar la sección de productos si se perdió el foco en una categoría
             document.getElementById('adminProductsSection').classList.add('hidden'); 
             currentEditingCategory = null;
 
@@ -1009,24 +915,19 @@
             lucide.createIcons();
         }
 
-        // --- Categoría CRUD ---
-
-        // Añade una nueva categoría
         function addCategory() {
             const name = document.getElementById('newCategoryNameInput').value.trim();
             if (name) {
                 const id = crypto.randomUUID(); 
                 window.appData.categories.push({ id: id, name: name, products: [] });
-                saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
+                saveCatalog(); // <-- Guarda en Firebase/Local
                 renderAdminCategories();
                 hideModal();
             } else {
-                // Mensaje de error simple, reutilizando el modal
                 showMessage('Error', '<p class="text-red-600 text-center">El nombre de la categoría no puede estar vacío.</p><button onclick="hideModal(event)" class="w-full mt-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg transition duration-150 shadow-md">Cerrar</button>');
             }
         }
 
-        // Muestra el modal para añadir una nueva categoría
         function showAddCategoryModal() {
             showMessage('Añadir Nueva Categoría', `
                 <p class="text-gray-600 mb-4">Ingresa el nombre de la nueva categoría:</p>
@@ -1038,7 +939,6 @@
             `);
         }
         
-        // Muestra el modal para editar el nombre de la categoría
         function showEditCategoryModal(id, currentName) {
             showMessage('Editar Categoría', `
                 <p class="text-gray-600 mb-4">Renombrar categoría: <strong>${currentName}</strong></p>
@@ -1050,15 +950,13 @@
             `);
         }
 
-        // Actualiza el nombre de la categoría
         function updateCategoryName(id) {
             const newName = document.getElementById('editCategoryNameInput').value.trim();
             if (newName) {
                 const category = window.appData.categories.find(c => c.id === id);
                 if (category) {
                     category.name = newName;
-                    saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
-                    // Si la vista de productos estaba abierta, actualizarla
+                    saveCatalog(); // <-- Guarda en Firebase/Local
                     if(currentEditingCategory && currentEditingCategory.id === id) {
                         currentEditingCategory.name = newName;
                         document.getElementById('adminProductsTitle').textContent = `Productos en ${newName}`;
@@ -1071,7 +969,6 @@
             }
         }
         
-        // Muestra la confirmación para eliminar la categoría
         function showConfirmDeleteCategory(id, name) {
             showMessage('Confirmar Eliminación', `
                 <p class="text-lg font-bold text-red-600 text-center mb-4">¿Estás seguro que deseas eliminar la categoría "<strong>${name}</strong>"?</p>
@@ -1089,17 +986,13 @@
             `);
         }
         
-        // Elimina la categoría
         function deleteCategory(id) {
             window.appData.categories = window.appData.categories.filter(c => c.id !== id);
-            saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
+            saveCatalog(); // <-- Guarda en Firebase/Local
             renderAdminCategories();
             hideModal();
         }
-
-        // --- Producto CRUD ---
         
-        // Selecciona la categoría para editar sus productos
         function selectCategoryForEditing(id, name) {
             const category = window.appData.categories.find(c => c.id === id);
             if (category) {
@@ -1110,7 +1003,6 @@
             }
         }
 
-        // Renderiza la lista de productos en la vista de Admin
         function renderAdminProducts() {
             const list = document.getElementById('adminProductsList');
             list.innerHTML = '';
@@ -1120,7 +1012,6 @@
                 return;
             }
             
-            // Crear la tabla de productos
             currentEditingCategory.products.forEach((product, index) => {
                 const div = document.createElement('div');
                 div.className = 'flex justify-between items-center p-3 bg-white rounded-lg shadow-sm border border-gray-200';
@@ -1144,7 +1035,6 @@
             lucide.createIcons();
         }
 
-        // Muestra el modal para añadir un nuevo producto
         function showAddProductModal() {
             const categoryName = currentEditingCategory ? currentEditingCategory.name : 'la categoría';
             showMessage('Añadir Nuevo Producto', `
@@ -1160,24 +1050,18 @@
             `);
         }
 
-        // Añade el producto a la categoría actual
         function addProduct() {
             if (!currentEditingCategory) return;
-
             const name = document.getElementById('productNameInput').value.trim();
             const price = parseFloat(document.getElementById('productPriceInput').value);
 
             if (name && !isNaN(price) && price >= 0) {
                 currentEditingCategory.products.push({ nombre: name, precio: price });
-                
-                // Actualizar la categoría en el array principal
                 const index = window.appData.categories.findIndex(c => c.id === currentEditingCategory.id);
                 if (index !== -1) {
-                    // Aseguramos que la referencia en appData se actualice
                     window.appData.categories[index] = currentEditingCategory;
                 }
-                
-                saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
+                saveCatalog(); // <-- Guarda en Firebase/Local
                 renderAdminProducts();
                 hideModal();
             } else {
@@ -1185,7 +1069,6 @@
             }
         }
         
-        // Muestra el modal para editar un producto
         function showEditProductModal(categoryId, index, name, price) {
             showMessage('Editar Producto', `
                 <p class="text-gray-600 mb-4">Editando: <strong>${name}</strong></p>
@@ -1200,7 +1083,6 @@
             `);
         }
 
-        // Actualiza el producto
         function updateProduct(categoryId, index) {
             const newName = document.getElementById('editProductNameInput').value.trim();
             const newPrice = parseFloat(document.getElementById('editProductPriceInput').value);
@@ -1210,13 +1092,10 @@
                 if (category && category.products[index]) {
                     category.products[index].nombre = newName;
                     category.products[index].precio = newPrice;
-                    
-                    // Asegurarse de que el objeto actual de edición se actualice
                     if (currentEditingCategory && currentEditingCategory.id === categoryId) {
                         currentEditingCategory.products[index] = category.products[index];
                     }
-
-                    saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
+                    saveCatalog(); // <-- Guarda en Firebase/Local
                     renderAdminProducts();
                     hideModal();
                 }
@@ -1225,7 +1104,6 @@
             }
         }
         
-        // Muestra la confirmación para eliminar un producto
         function showConfirmDeleteProduct(categoryId, index, name) {
             showMessage('Confirmar Eliminación de Producto', `
                 <p class="text-lg font-bold text-red-600 text-center mb-4">¿Deseas eliminar el producto "<strong>${name}</strong>"?</p>
@@ -1242,18 +1120,14 @@
             `);
         }
 
-        // Elimina el producto
         function deleteProduct(categoryId, index) {
             const category = window.appData.categories.find(c => c.id === categoryId);
             if (category && category.products[index]) {
                 category.products.splice(index, 1);
-                
                 if (currentEditingCategory && currentEditingCategory.id === categoryId) {
-                    // Aseguramos que el objeto de la vista de edición se mantenga sincronizado
                     currentEditingCategory.products = category.products;
                 }
-                
-                saveCatalog(); // <<-- GUARDA EN FIRESTORE / LOCAL STORAGE
+                saveCatalog(); // <-- Guarda en Firebase/Local
                 renderAdminProducts();
                 hideModal();
             }
