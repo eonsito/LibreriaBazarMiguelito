@@ -505,13 +505,14 @@
                 return;
             }
             
-            // La ruta sigue las reglas de seguridad para datos privados de usuario: /artifacts/{appId}/users/{userId}/admin_data/catalog
-            const catalogRef = window.doc(window.db, `artifacts/${window.appId}/users/${window.userId}/admin_data`, 'catalog');
+            // La ruta ahora es COMPARTIDA para que todos los usuarios vean los cambios.
+            // Ruta corregida: artifacts/{appId}/shared_data/catalog
+            const catalogRef = window.doc(window.db, `artifacts/${window.appId}/shared_data`, 'catalog');
             
             try {
                 // Usamos un objeto simple para guardar la lista de categorías
                 await window.setDoc(catalogRef, { categories: window.appData.categories });
-                console.log("Catálogo guardado exitosamente en Firestore.");
+                console.log("Catálogo guardado exitosamente en Firestore (Ruta Compartida).");
             } catch (e) {
                 console.error("Error al guardar el catálogo: ", e);
                 // No mostramos un modal aquí para evitar interrupción, solo logueamos el error
@@ -522,7 +523,9 @@
         window.startFirebaseListeners = function() {
             if (!window.db || !window.userId || window.appData.isDataLoaded) return;
             
-            const catalogRef = window.doc(window.db, `artifacts/${window.appId}/users/${window.userId}/admin_data`, 'catalog');
+            // La ruta ahora es COMPARTIDA para que todos los usuarios lean los cambios.
+            // Ruta corregida: artifacts/{appId}/shared_data/catalog
+            const catalogRef = window.doc(window.db, `artifacts/${window.appId}/shared_data`, 'catalog');
 
             // onSnapshot escucha los cambios en tiempo real y carga los datos guardados.
             window.onSnapshot(catalogRef, (docSnapshot) => {
@@ -532,7 +535,7 @@
                 if (docSnapshot.exists()) {
                     const data = docSnapshot.data();
                     window.appData.categories = data.categories || []; 
-                    console.log("Datos de Catálogo actualizados desde Firestore.", window.appData.categories.length, "categorías.");
+                    console.log("Datos de Catálogo actualizados desde Firestore (Ruta Compartida).", window.appData.categories.length, "categorías.");
                 } else {
                     // Si el documento no existe (primera vez), inicializa data local vacía y la guarda
                     window.appData.categories = [];
@@ -964,7 +967,7 @@
             if (name) {
                 const id = crypto.randomUUID(); 
                 window.appData.categories.push({ id: id, name: name, products: [] });
-                saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                saveCatalog(); // <<-- GUARDA EN FIRESTORE (Ruta Compartida)
                 renderAdminCategories();
                 hideModal();
             } else {
@@ -1004,7 +1007,7 @@
                 const category = window.appData.categories.find(c => c.id === id);
                 if (category) {
                     category.name = newName;
-                    saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                    saveCatalog(); // <<-- GUARDA EN FIRESTORE (Ruta Compartida)
                     // Si la vista de productos estaba abierta, actualizarla
                     if(currentEditingCategory && currentEditingCategory.id === id) {
                         currentEditingCategory.name = newName;
@@ -1039,7 +1042,7 @@
         // Elimina la categoría
         function deleteCategory(id) {
             window.appData.categories = window.appData.categories.filter(c => c.id !== id);
-            saveCatalog(); // <<-- GUARDA EN FIRESTORE
+            saveCatalog(); // <<-- GUARDA EN FIRESTORE (Ruta Compartida)
             renderAdminCategories();
             hideModal();
         }
@@ -1124,7 +1127,7 @@
                     window.appData.categories[index] = currentEditingCategory;
                 }
                 
-                saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                saveCatalog(); // <<-- GUARDA EN FIRESTORE (Ruta Compartida)
                 renderAdminProducts();
                 hideModal();
             } else {
@@ -1163,7 +1166,7 @@
                         currentEditingCategory.products[index] = category.products[index];
                     }
 
-                    saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                    saveCatalog(); // <<-- GUARDA EN FIRESTORE (Ruta Compartida)
                     renderAdminProducts();
                     hideModal();
                 }
@@ -1200,7 +1203,7 @@
                     currentEditingCategory.products = category.products;
                 }
                 
-                saveCatalog(); // <<-- GUARDA EN FIRESTORE
+                saveCatalog(); // <<-- GUARDA EN FIRESTORE (Ruta Compartida)
                 renderAdminProducts();
                 hideModal();
             }
